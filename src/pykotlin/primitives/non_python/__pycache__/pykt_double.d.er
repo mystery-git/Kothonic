@@ -1,0 +1,7 @@
+##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\primitives\non_python\pykt_double.py 1766099647 83
+.builtins = pyimport "builtins"
+
+.___v_desugar_1 = pyimport "typing"
+.typing = pyimport "typing"
+.TypeAlias: Never
+.Double: Never

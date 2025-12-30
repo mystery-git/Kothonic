@@ -1,0 +1,7 @@
+##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\primitives\non_python\pykt_long.py 1766099650 79
+.builtins = pyimport "builtins"
+
+.___v_desugar_1 = pyimport "typing"
+.typing = pyimport "typing"
+.TypeAlias: Never
+.Long: Never

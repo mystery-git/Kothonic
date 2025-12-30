@@ -1,0 +1,12 @@
+##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\objects\pykt_enum.py 1767013537 838
+.___v_desugar_1 = pyimport "enum"
+.enum = pyimport "enum"
+.Enum: {enum.Enum}
+.___v_desugar_2 = pyimport "enum"
+
+._auto: {enum.Auto}
+.___v_desugar_3 = pyimport "typing"
+.typing = pyimport "typing"
+.Any: {typing.Any}
+.auto: {enum.Auto}
+.enum: () -> enum.Enum

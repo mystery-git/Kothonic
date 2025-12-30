@@ -1,0 +1,27 @@
+##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\standard\aliases.py 1766851512 624
+.builtins = pyimport "builtins"
+
+.___v_desugar_1 = pyimport "abc"
+.abc = pyimport "abc"
+.ABC: {abc.ABC}
+.___v_desugar_2 = pyimport "typing"
+.typing = pyimport "typing"
+.Anything: {typing.Any}
+.___v_desugar_3 = pyimport "typing"
+
+.Callable: {collections.abc.Callable}
+.NoReturn: Never
+.Optional: {typing.Optional}
+.TypeAlias: Never
+.Union: {typing.Union}
+.Any: {typing.Any}
+.Nothing: Never
+.Number: Never
+.Unit: {None}
+.null: Never
+.Nullable: {typing.Optional}
+.Throwable: Never
+.Interface: {abc.ABC}
+.Abstract: {abc.ABC}
+.Collection: Never
+.Function: {collections.abc.Callable}

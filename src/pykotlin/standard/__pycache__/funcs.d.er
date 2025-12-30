@@ -1,0 +1,3 @@
+##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\standard\funcs.py 1766101686 100
+.println: (target: Obj) -> NoneType
+.readln: (target: Obj) -> NoneType

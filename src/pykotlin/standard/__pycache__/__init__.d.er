@@ -1,0 +1,30 @@
+##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\standard\__init__.py 1766837630 624
+.___v_desugar_1 = pyimport "aliases"
+.aliases = pyimport "aliases"
+.Abstract: {abc.ABC}
+.Collection: Never
+.Function: {collections.abc.Callable}
+.Interface: {abc.ABC}
+.Nullable: {typing.Optional}
+.Number: Never
+.Throwable: {global::Exception}
+.Unit: {None}
+.null: Never
+.___v_desugar_2 = pyimport "extension_decorator"
+.extension_decorator = pyimport "extension_decorator"
+.extension: (self: Obj) -> (func: collections.abc.Callable) -> collections.abc.Callable
+.___v_desugar_3 = pyimport "funcs"
+.funcs = pyimport "funcs"
+.println: (target: Obj) -> NoneType
+.readln: (target: Obj) -> NoneType
+.___v_desugar_4 = pyimport "kotlin_value"
+.kotlin_value = pyimport "kotlin_value"
+.KotlinValue: {kotlin_value.KotlinValue}
+.___v_desugar_5 = pyimport "value_class"
+.value_class = pyimport "value_class"
+.InlineValue: {value_class.InlineValue}
+.___v_desugar_6 = pyimport "variables"
+.variables = pyimport "variables"
+.val: Never
+.var: Never
+.__all__: global::List!({"val", "Interface", "Nullable", "null", "println", "Throwable", "Abstract", "Function", "InlineValue", "Unit", "readln", "extension", "KotlinValue", "var", "Number", "Collection"}, 16)

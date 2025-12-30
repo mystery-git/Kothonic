@@ -1,0 +1,9 @@
+##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\standard\extension_decorator.py 1766101995 564
+.___v_desugar_1 = pyimport "typing"
+.typing = pyimport "typing"
+.Callable: {collections.abc.Callable}
+.___v_desugar_2 = pyimport "__init__"
+.__init__ = pyimport "__init__"
+.curse: |Type_807 <: Structural({.__name__ = ?2091}), Type_2091 <: Ref(Obj)|(klass: Type_807, attr: Structural({.startswith = (self: Obj, Obj) -> Structural({.__and__ = (self: Never, Obj) -> Bool}); .endswith = (self: Obj, Obj) -> Never}), value: () -> Never, hide_from_dir: {False} := {False} and {False}) -> NoneType
+.__is_builtin: (obj: Obj) -> {.Type(.obj).__module__ in {"builtins"}}
+.extension: (self: Obj) -> (func: collections.abc.Callable) -> collections.abc.Callable

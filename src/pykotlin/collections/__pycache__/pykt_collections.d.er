@@ -1,0 +1,35 @@
+##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\collections\pykt_collections.py 1766871964 5881
+.___v_desugar_1 = pyimport "typing"
+.typing = pyimport "typing"
+.Callable: {collections.abc.Callable}
+.Collection: {collections.abc.Collection}
+.Dict: {Type_v_global_2226: (D: global::GenericDict) -> {global::Dict(_: global::GenericDict)} | Type_v_global_2226 == Dict}
+.Iterable: {collections.abc.Iterable}
+.List: {Type_v_global_2230: (T: Type, N := Nat) -> {global::List(Never, _: Nat)} | Type_v_global_2230 == List}
+.Tuple: {typing.Tuple}
+.TypeVar: {typing.TypeVar}
+.Union: {typing.Union}
+.K: Never
+.V: Never
+.T: Never
+.R: Never
+.filter_: Never
+.map_: Never
+.plus: Never
+.all_: Never
+.any_: Never
+.associate: Never
+.average: (self: global::Iterable(Float)) -> Float
+.contains: Never
+.contains_all: Never
+.count_: Never
+.distinct: Never
+.drop: Never
+.drop_last: Never
+.element_at: Never
+.element_at_or_null: Never
+.element_at_or_else: ||Never
+.find: ||Never
+.first: Never
+.first_not_null: Never
+.first_or_null: Never
