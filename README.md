@@ -10,8 +10,8 @@ Kothonic bridges the gap between Python and Kotlin, pushing the limits of the Py
 
 *   **Fluent Chaining**: Read your code from left to right. Chain operations naturally without jumping back and forth between function calls.
 *   **Null Safety**: Handle missing data gracefully. Use methods like `to_int_or_null()` to avoid unexpected crashes and excessive `try/except` blocks.
-*   **Expressive Collections**: unleash the full power of collection processing. `filter()`, `map()`, `flatten()`, and `find()` elements in your lists and dictionaries with an intuitive, unified API.
-*   **Scoping Functions**: Keep your scope clean and your intent clear with `let()`, `apply()`, and `also()`.
+*   **Expressive Collections**: Unleash the full power of collection processing. `filter()`, `map()`, `flatten()`, and `find()` elements in your lists and dictionaries with an intuitive, unified API.
+*   **Scoping Functions**: Keep your scope clean and your intent clear with `let()`, and `apply()`.
 *   **The Power of `it`**: Simplify your lambdas. Access the current element in a concise and readable way.
 *   **Modular**: Every Kothonic code is valid Python so you can take only the features you are really missing.
 
@@ -34,16 +34,18 @@ result = raw_string.trim().to_int_or_null() # result is 123 (an integer)
 Process data utilizing a powerful, functional approach.
 
 ```python
+from kothonic.collections import List
+
 users = [
     {"name": "Alice", "active": True},
     {"name": "Bob", "active": False},
     {"name": "Charlie", "active": True}
 ]
 
-users = Map(users)
+users = List(users)
 
 # Get names of active users calling standard Python dict access
-active_names = users.filter(lambda u: u['active']).map(lambda u: u['name'])
+active_names = users.filter_(lambda u: u['active']).map_(lambda u: u['name'])
 # ['Alice', 'Charlie']
 ```
 
@@ -84,4 +86,10 @@ print(s.trim().uppercase()) # HELLO
 
 ## Disclaimer
 
-Kothonic can achieve "native integration" through advanced monkey-patching of Python's built-in types (`str`, `int`, `list`, etc). While this provides a powerful and "native" feel, it modifies the runtime environment. This is safe so long as no existing methods are patched which will actively be monitored.
+A **completely optional** use of Kothonic is achieving "native integration" through advanced monkey-patching of Python's built-in types (`str`, `int`, `list`, etc). This can make the existing types work at runtime with methods such as `int.to_float()`. While this provides a powerful and "native" feel, it modifies the runtime environment. This is safe so long as no pre-existing methods of the classes are patched which will actively be monitored. 
+
+If you're unsure about how this works please take the time to look into **forbiddenfruit**. 
+
+Or if you're unsure just stick with the extended classes that are part of Kothonic (`String`, `Int`, `List`, etc) which behave exactly like the standard types but have the benefits of Kotlin.
+
+
