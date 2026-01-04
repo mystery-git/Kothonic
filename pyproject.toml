@@ -1,10 +1,20 @@
 [project]
-name = "pykotlin"
+name = "kothonic"
 version = "0.1.0"
 description = "Bridging Python and Kotlin type systems for improved interoperability and readability."
 authors = [{ name = "Matt" }]
 requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["kotlin", "interoperability", "standard-library", "monkey-patching"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["typing-extensions>=4.0.0", "forbiddenfruit>=0.1.4"]
 
+# BUILD
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
@@ -14,11 +24,37 @@ where = ["src"]
 exclude = ["test"]
 
 [tool.setuptools.package-data]
-pykotlin = ["py.typed", "*.pyi"]
+kothonic = ["py.typed", "*.pyi"]
+
+# TOOLS
+
+# Pytest
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-p no:cacheprovider"
+
+# 
+[tool.pyrefly]
+project-includes = ["**/*.py*", "**/*.ipynb"]
+
+
+[tool.ruff]
+fix = true
+line-length = 320
 
 [tool.ruff.lint]
-ignore = ['E701', 'F821']
+select = ["E", "W", "F", "I", "UP", "N"]
+ignore = ['E701', 'F821', 'W191', "E501", "E221", "UP039", "N818"]
 
-[tool.pyrefly]
-project-includes = ["src"]
-search-path = ["src", "test", "typings"]
+[tool.ruff.lint.isort]
+combine-as-imports = true
+length-sort = true
+lines-after-imports = 2
+lines-between-types = 1
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false

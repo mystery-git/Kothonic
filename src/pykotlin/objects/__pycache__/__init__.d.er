@@ -1,8 +1,0 @@
-##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\objects\__init__.py 1767025374 117
-.___v_desugar_1 = pyimport "pykt_dataclass"
-.pykt_dataclass = pyimport "pykt_dataclass"
-.create_dataclass: |Type_454: Type|(cls: Type_454) -> Type_454
-.___v_desugar_2 = pyimport "pykt_enum"
-.pykt_enum = pyimport "pykt_enum"
-.enum: () -> enum.Enum
-.__all__: global::List!({"create_dataclass", "enum"}, 2)

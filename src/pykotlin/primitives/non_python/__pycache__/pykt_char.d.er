@@ -1,7 +1,0 @@
-##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\primitives\non_python\pykt_char.py 1766099645 79
-.builtins = pyimport "builtins"
-
-.___v_desugar_1 = pyimport "typing"
-.typing = pyimport "typing"
-.TypeAlias: Never
-.Char: Never

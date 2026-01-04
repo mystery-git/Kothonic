@@ -1,8 +1,0 @@
-##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\__init__.py 1766887487 232
-.DUMMY = pyimport "collections"
-.collections = pyimport "collections"
-.objects = pyimport "objects"
-.primitives = pyimport "primitives"
-.random = pyimport "random"
-.standard = pyimport "standard"
-.time = pyimport "time"

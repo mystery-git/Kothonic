@@ -1,9 +1,0 @@
-##[pylyzer] failed c:\users\mathe\my files\projects\software\pykotlin\src\pykotlin\standard\kotlin_value.py 1766102239 130
-.___v_desugar_1 = pyimport "typing"
-.typing = pyimport "typing"
-.Any: {typing.Any}
-.KotlinValue: ClassType
-.KotlinValue.value: Never
-.KotlinValue.__call__: () -> kotlin_value.KotlinValue
-.KotlinValue.elvis: (self: kotlin_value.KotlinValue, other: Obj) -> Never
-

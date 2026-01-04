@@ -1,80 +1,87 @@
-# PyKotlin
+# **Kothonic**
 
-PyKotlin is a Python library designed to **bridge the syntax gap between Python and Kotlin**. It brings the expressive and fluent API of Kotlin's standard library to Python, making Python code feel more familiar to Kotlin developers and providing all Pythonistas with powerful new ways to manipulate strings, collections, and more.
+> "Write Kotlin\* in Python"
 
-## The Goal
+Kothonic bridges the gap between Python and Kotlin, pushing the limits of the Python language to give users a way to write Kotlin-like code in Python projects.
 
-The primary goal of this project is to reduce cognitive friction for developers moving between Python and Kotlin. Python and Kotlin share many conceptual similarities, but their syntax for common operations (especially collection manipulation and string handling) differs significantly.
+## Why Kothonic?
 
-PyKotlin bridges this gap by:
-1.  **Injecting Fluent APIs**: Adding Kotlin's expressive method names directly to Python's built-in types.
-2.  **Standardizing API Surface**: Providing a consistent experience that mirrors the Kotlin Standard Library.
-3.  **Enhancing Readability**: Allowing for chainable operations that read more like natural language or Kotlin code.
-4. **Making You Feel At Home**: Allowing you to write code that feels more like Kotlin.
+> "Once you go Kotlin you never go back."
 
-## Key Features
+*   **Fluent Chaining**: Read your code from left to right. Chain operations naturally without jumping back and forth between function calls.
+*   **Null Safety**: Handle missing data gracefully. Use methods like `to_int_or_null()` to avoid unexpected crashes and excessive `try/except` blocks.
+*   **Expressive Collections**: unleash the full power of collection processing. `filter()`, `map()`, `flatten()`, and `find()` elements in your lists and dictionaries with an intuitive, unified API.
+*   **Scoping Functions**: Keep your scope clean and your intent clear with `let()`, `apply()`, and `also()`.
+*   **The Power of `it`**: Simplify your lambdas. Access the current element in a concise and readable way.
+*   **Modular**: Every Kothonic code is valid Python so you can take only the features you are really missing.
 
-- **Fluent Standard Library**: Use Kotlin's method names on Python built-ins.
-  - Strings: `.uppercase()`, `.lowercase()`, `.take(n)`, `.to_int_or_null()`, `.is_null_or_blank()`.
-  - Lists: `.filter()`, `.map()`, `.flatten()`, `.first_or_null()`, `.distinct()`.
-- **Extension Functions**: Define your own extensions on any class (including built-ins) using the `@extension` decorator.
-- **Null Safety Helpers**: Methods like `to_int_or_null()` and `first_or_null()` provide a more "Kotlin-esque" way to handle potential missing values.
-- **Type Aliases**: Familiar Kotlin type names like `String`, `Int`, `Boolean`, `List`, and `Map` are available.
+## Features
 
-## Naming Conventions
+> "Omg you can do that!?"
 
-While PyKotlin brings Kotlin's API to Python, it intentionally follows **Python's snake_case naming conventions** for all injected functions, methods, and extensions.
+Some great features of Kothonic are:
 
-This design choice ensures that:
-1.  **Python Consistency**: Code remains idiomatic to the Python ecosystem.
-2.  **Developer Portability**: Developers moving between PyKotlin and standard Python projects stay familiar with Python's style conventions, making their skills more portable.
-3.  **Tooling Compatibility**: Auto-completion and linting tools behave as expected in a Python environment.
-
-For example, Kotlin's `toIntOrNull()` becomes Python's `to_int_or_null()`.
-
-## How it Works
-
-PyKotlin uses "injection" (via the `forbiddenfruit` library) to add methods directly to Python's built-in classes at runtime. This allows you to call these methods as if they were natively part of Python.
-
-### Basic Usage
-
-Simply import the library to activate the injections:
+### String Manipulation
+Perform complex string operations with ease and safety.
 
 ```python
-import pykotlin
-
-# String manipulations
-name = "   pykotlin   "
-print(name.trim().uppercase().take(2)) # Output: PY
-
-# Collection manipulations
-numbers = [1, 2, 3, 4, 5]
-evens = numbers.filter_(lambda x: x % 2 == 0)
-print(evens) # Output: [2, 4]
-
-# Null-safe conversions
-num = "123".to_int_or_null() # 123
-invalid = "abc".to_int_or_null() # None
+# Kothonic
+raw_string = String("  123  ")
+result = raw_string.trim().to_int_or_null() # result is 123 (an integer)
 ```
 
-### Creating Extensions
-
-You can add your own methods to existing classes:
+### Collection Pipelines
+Process data utilizing a powerful, functional approach.
 
 ```python
-from pykotlin import extension
+users = [
+    {"name": "Alice", "active": True},
+    {"name": "Bob", "active": False},
+    {"name": "Charlie", "active": True}
+]
 
-@extension(str)
-def shout(self):
-    return self.upper() + "!!!"
+users = Map(users)
 
-print("hello".shout()) # Output: HELLO!!!
+# Get names of active users calling standard Python dict access
+active_names = users.filter(lambda u: u['active']).map(lambda u: u['name'])
+# ['Alice', 'Charlie']
+```
+
+### Safety First
+Avoid runtime errors with safe conversion methods.
+
+**Pythonic way:**
+```python
+try:
+    value = int(user_input)
+except ValueError:
+    value = None
+```
+
+**Kothonic way:**
+```python
+value = user_input.to_int_or_null()
+```
+
+## Getting Started
+
+### Installation
+
+```bash
+pip install kothonic
+```
+
+### Usage
+
+You can start using Kothonic's features immediately by importing the provided classes.
+
+```python
+from kothonic import String
+
+s = String("   hello   ")
+print(s.trim().uppercase()) # HELLO
 ```
 
 ## Disclaimer
 
-PyKotlin uses advanced monkey-patching techniques to modify built-in types. While this provides a powerful and seamless experience, it should be used with an understanding of how it affects the global Python environment.
-
----
-
-*Bridge the gap. Write PyKotlin.*
+Kothonic can achieve "native integration" through advanced monkey-patching of Python's built-in types (`str`, `int`, `list`, etc). While this provides a powerful and "native" feel, it modifies the runtime environment. This is safe so long as no existing methods are patched which will actively be monitored.

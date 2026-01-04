@@ -1,5 +1,8 @@
-/test
-/stub_pipeline
-/.vscode
-/GEMINI.md
+.*/
+.venv/
+venv/
+*cache*
+/*agent*
+*GEMINI.**
 /todo.md
+*.pyc
