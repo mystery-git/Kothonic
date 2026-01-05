@@ -7,3 +7,4 @@ venv/
 *GEMINI.*
 /todo.md
 *.pyc
+*.egg-info
