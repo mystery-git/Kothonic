@@ -92,4 +92,8 @@ If you're unsure about how this works please take the time to look into **forbid
 
 Or if you're unsure just stick with the extended classes that are part of Kothonic (`String`, `Int`, `List`, etc) which behave exactly like the standard types but have the benefits of Kotlin.
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 

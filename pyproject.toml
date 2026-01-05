@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Bridging Python and Kotlin type systems for improved interoperability and readability."
 authors = [{ name = "Matt" }]
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = { file = "LICENSE" }
 keywords = ["kotlin", "interoperability", "standard-library", "monkey-patching"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
