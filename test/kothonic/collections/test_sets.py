@@ -1,6 +1,6 @@
 import pytest
 
-from kothonic.collections import Set, set_of
+from kothonic.collections import Set, set_of, empty_set
 
 
 def test_filter_():
@@ -23,15 +23,72 @@ def test_map_():
 	assert 6 in result
 
 
-def test_plus():
-	s: Set[int] = set_of({1, 2})
-	# plus returns Set
-	result = s.plus({3})
-	assert isinstance(result, Set)
-	assert 1 in result
-	assert 2 in result
-	assert 3 in result
-	assert len(result) == 3
+def test_plus_variants():
+	s: Set[int] = set_of({1, 2, 3})
+
+	# Verify plus with a single element
+	result1 = s.plus(4)
+	assert isinstance(result1, Set)
+	assert result1 == {1, 2, 3, 4}
+
+	# Verify plus with a collection
+	result2 = s.plus([4, 5])
+	assert isinstance(result2, Set)
+	assert result2 == {1, 2, 3, 4, 5}
+
+	# Verify plus with a string (should be treated as single element)
+	s_str: Set[str] = set_of({"a", "b"})
+	result3 = s_str.plus("c")
+	assert result3 == {"a", "b", "c"}
+	result4 = s_str.plus("def")
+	assert "def" in result4
+	assert len(result4) == 3
+
+	# Assert the original set is unmodified
+	assert s == {1, 2, 3}
+	assert s_str == {"a", "b"}
+
+
+def test_set_specific_ops():
+	s1: Set[int] = set_of({1, 2, 3})
+	s2: Set[int] = set_of({3, 4, 5})
+
+	# intersect
+	intersect_res = s1.intersect(s2)
+	assert isinstance(intersect_res, Set)
+	assert intersect_res == {3}
+
+	# subtract
+	subtract_res = s1.subtract(s2)
+	assert isinstance(subtract_res, Set)
+	assert subtract_res == {1, 2}
+
+	# Mixed Types: intersect with list
+	mixed_intersect = s1.intersect([2, 3, 6])
+	assert isinstance(mixed_intersect, Set)
+	assert mixed_intersect == {2, 3}
+
+	# Mixed Types: subtract with list
+	mixed_subtract = s1.subtract([2, 3, 6])
+	assert isinstance(mixed_subtract, Set)
+	assert mixed_subtract == {1}
+
+
+def test_empty_sets():
+	empty = empty_set()
+	s = set_of({1, 2})
+
+	# plus
+	assert empty.plus(1) == {1}
+	assert s.plus(empty) == {1, 2}
+
+	# intersect
+	assert empty.intersect(s) == set()
+	assert s.intersect(empty) == set()
+
+	# subtract
+	assert empty.subtract(s) == set()
+	assert s.subtract(empty) == {1, 2}
 
 
 def test_all_():
@@ -174,8 +231,6 @@ def test_set_instance():
 
 def test_empty_set_factory():
 	"""Test empty_set() factory function."""
-	from kothonic.collections import empty_set
-
 	e = empty_set()
 	assert isinstance(e, Set)
 	assert len(e) == 0
