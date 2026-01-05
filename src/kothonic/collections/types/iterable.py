@@ -7,6 +7,7 @@ from collections.abc import Callable, Iterable as ABCIterable
 if TYPE_CHECKING:
 	from .map import Map
 	from .list import List
+	from .set import Set
 
 
 T = TypeVar("T", covariant=True)
@@ -201,3 +202,30 @@ class Iterable(Generic[T], ABCIterable[T]):
 			result.extend(item)  # type: ignore
 
 		return List(result)
+
+	# Kotlin: infix fun <T> Iterable<T>.union(other: Iterable<T>): Set<T>
+	def union(self, other: ABCIterable[T]) -> Set[T]:
+		"""
+		Returns a set containing all distinct elements from both collections.
+		"""
+		from .set import Set
+
+		return Set(set(self).union(other))
+
+	# Kotlin: infix fun <T> Iterable<T>.intersect(other: Iterable<T>): Set<T>
+	def intersect(self, other: ABCIterable[T]) -> Set[T]:
+		"""
+		Returns a set containing all elements that are contained by both this collection and the specified collection.
+		"""
+		from .set import Set
+
+		return Set(set(self).intersection(other))
+
+	# Kotlin: infix fun <T> Iterable<T>.subtract(other: Iterable<T>): Set<T>
+	def subtract(self, other: ABCIterable[T]) -> Set[T]:
+		"""
+		Returns a set containing all elements that are contained by this collection and not contained by the specified collection.
+		"""
+		from .set import Set
+
+		return Set(set(self).difference(other))

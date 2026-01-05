@@ -31,3 +31,27 @@ class Set(Generic[T], set[T], Collection[T], KotlinValue[set[T]]):
 		else:
 			new_set.add(elements)  # type: ignore
 		return Set(new_set)
+
+	# Kotlin: infix fun <T> Iterable<T>.union(other: Iterable<T>): Set<T>
+	@override
+	def union(self, other: ABCIterable[T]) -> Set[T]:  # type: ignore
+		"""
+		Returns a set containing all distinct elements from both collections.
+		"""
+		return Set(super().union(other))
+
+	# Kotlin: infix fun <T> Iterable<T>.intersect(other: Iterable<T>): Set<T>
+	@override
+	def intersect(self, other: ABCIterable[T]) -> Set[T]:
+		"""
+		Returns a set containing all elements that are contained by both this collection and the specified collection.
+		"""
+		return Set(self.intersection(other))
+
+	# Kotlin: infix fun <T> Iterable<T>.subtract(other: Iterable<T>): Set<T>
+	@override
+	def subtract(self, other: ABCIterable[T]) -> Set[T]:
+		"""
+		Returns a set containing all elements that are contained by this collection and not contained by the specified collection.
+		"""
+		return Set(self.difference(other))
