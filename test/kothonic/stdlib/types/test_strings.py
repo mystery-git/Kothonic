@@ -147,5 +147,10 @@ def test_to_list():
 	assert isinstance(result, list)
 
 
+def test_method_chaining():
+	new_string = test_string.uppercase().lowercase().reversed_().trim().substring(0, 2).uppercase().lowercase()
+	assert new_string == "ts"
+
+
 if __name__ == "__main__":
 	pytest.main([__file__])
