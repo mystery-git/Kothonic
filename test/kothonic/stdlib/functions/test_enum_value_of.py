@@ -30,4 +30,3 @@ def test_enum_value_of_case_sensitive():
 
 if __name__ == "__main__":
 	pytest.main([__file__])
-

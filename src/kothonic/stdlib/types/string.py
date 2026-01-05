@@ -125,6 +125,7 @@ class String(str, KotlinValue[str]):
 
 	# Kotlin: operator fun String.plus(other: Any?): String
 	def plus(self, other: Any) -> String:
+		"""Returns the concatenation of this string with the string representation of the given other object."""
 		return String(self + str(other))
 
 	# Kotlin: fun String.capitalize(): String

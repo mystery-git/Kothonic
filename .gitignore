@@ -1,8 +1,9 @@
 .*/
 .venv/
+.env/
 venv/
 *cache*
 /*agent*
-*GEMINI.**
+*GEMINI.*
 /todo.md
 *.pyc

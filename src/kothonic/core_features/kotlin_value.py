@@ -32,9 +32,9 @@ class KotlinValue(Generic[T]):
 	def elvis(self, other: Any) -> Any:
 		"""
 		Implements the Elvis operator (?:) logic.
-		Returns the inner value if it is truthy, otherwise returns 'other'.
+		Returns the inner value if it is not None, otherwise returns 'other'.
 		"""
-		return self._kotlin_value or other
+		return other if self._kotlin_value is None else self._kotlin_value
 
 	def let(self, block: Callable[[T], Any]) -> Any:
 		"""

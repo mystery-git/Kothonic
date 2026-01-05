@@ -66,6 +66,9 @@ class Float(float, KotlinValue[float]):
 
 	# Kotlin: fun Double.toIntOrNull(): Int? (Custom extension for consistency)
 	def to_int_or_null(self) -> Int | None:
+		"""
+		Returns the value of this number as an Int, or null if the conversion fails.
+		"""
 		from .int import Int
 
 		try:

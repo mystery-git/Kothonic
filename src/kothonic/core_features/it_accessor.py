@@ -2,7 +2,6 @@ class ItAccessor:
 	"""
 	A helper class to create deferred callable chains, similar to Kotlin's 'it' in lambdas,
 	but adapted for Python's syntax.
-	Usage: `map(it.upper(), ["a", "b"])`
 	"""
 
 	def __init__(self, action=None):
@@ -28,7 +27,6 @@ class ItAccessor:
 
 	def __call__(self, value):
 		"""Executes the accumulated action on the given value."""
-		return self.action(value)
 		return self.action(value)
 
 

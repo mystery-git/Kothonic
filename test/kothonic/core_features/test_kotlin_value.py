@@ -25,12 +25,9 @@ class TestKotlinValue:
 
 		assert a.elvis("default") == "value"
 		assert b.elvis("default") == "default"
-		# Kotlin's elvis usually checks for nullity, but here implementation uses `or`
-		# which checks truthiness.
-		# If the implementation is `return self._kotlin_value or other`, existing python behavior is truthiness.
-		# If strict null check is desired, implementation should be `val if val is not None else other`.
-		# Based on current implementation (and likely pythonic intent), empty string -> default.
-		assert c.elvis("default") == "default"
+		# Kotlin's elvis checks for nullity (None), not truthiness.
+		# So an empty string (falsy in Python) should NOT be replaced by default.
+		assert c.elvis("default") == ""
 
 	def test_to_string(self):
 		"""Test the to_string method returning a kothonic String."""
