@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import re
 import builtins
 
 from typing import TYPE_CHECKING, Any
+from collections.abc import Callable, Iterable
 
 from kothonic.core_features import KotlinValue
 
@@ -62,11 +64,13 @@ class String(str, KotlinValue[str]):
 	# Kotlin: fun String?.isNullOrEmpty(): Boolean
 	def is_null_or_empty(self) -> bool:
 		"""Returns true if this char sequence is null or empty."""
+		# TODO("Known issue: self is None is unreachable in instance methods. This will be addressed when implementing nullable types properly.")
 		return self is None or self == ""
 
 	# Kotlin: fun String?.isNullOrBlank(): Boolean
 	def is_null_or_blank(self) -> bool:
 		"""Returns true if this char sequence is null or empty or consists solely of whitespace characters."""
+		# TODO("Known issue: self is None is unreachable in instance methods. This will be addressed when implementing nullable types properly.")
 		return self is None or self.strip().replace(" ", "") == ""
 
 	# Kotlin: fun String.reversed(): String
@@ -131,11 +135,9 @@ class String(str, KotlinValue[str]):
 	# Kotlin: fun String.capitalize(): String
 	def capitalize_(self) -> String:
 		"""Returns a copy of this string having its first letter titlecased, or the original string if it's empty or already starts with a title case letter."""
-		words = self.strip().split(" ")
-		if not words:
-			return String(self)
-		first_word, remaining_words = (words[0], words[1:])
-		return String(first_word.title() + " " + " ".join(remaining_words) if remaining_words else first_word.title())
+		if not self:
+			return self
+		return String(self[0].upper() + self[1:])
 
 	# Kotlin: fun String.take(n: Int): String
 	def take(self, n: int) -> String:
@@ -179,3 +181,161 @@ class String(str, KotlinValue[str]):
 		from kothonic.collections import List
 
 		return List(list(self))
+
+	# --- Splitting & Joining ---
+
+	# Kotlin: fun CharSequence.split(regex: Regex, limit: Int = 0): List<String>
+	# Kotlin: fun CharSequence.split(vararg delimiters: String, ignoreCase: Boolean = false, limit: Int = 0): List<String>
+	def split_(self, delimiter: str | re.Pattern, limit: int = 0, ignore_case: bool = False) -> List[String]:
+		"""Splits this string to a list of strings around occurrences of the specified delimiter."""
+		from kothonic.collections import List
+
+		if limit == 1:
+			return List([self])
+
+		maxsplit = limit - 1 if limit > 0 else -1
+
+		if isinstance(delimiter, re.Pattern):
+			re_maxsplit = maxsplit if limit > 0 else 0
+			return List([String(s) for s in delimiter.split(self, maxsplit=re_maxsplit)])
+
+		if ignore_case:
+			# If ignore case is needed for string delimiter, we use regex with ignore case flag
+			pattern = re.escape(delimiter)
+			re_maxsplit = maxsplit if limit > 0 else 0
+			return List([String(s) for s in re.split(pattern, self, maxsplit=re_maxsplit, flags=re.IGNORECASE)])
+
+		return List([String(s) for s in self.split(delimiter, maxsplit)])
+
+	# Kotlin: fun CharSequence.lines(): List<String>
+	def lines(self) -> List[String]:
+		"""Splits this char sequence to a list of lines delimited by any of the standard line terminators."""
+		from kothonic.collections import List
+
+		return List([String(s) for s in self.splitlines()])
+
+	# Kotlin: fun CharSequence.lineSequence(): Sequence<String>
+	def line_sequence(self) -> Iterable[String]:
+		"""Returns a sequence of lines delimited by any of the standard line terminators."""
+		return (String(s) for s in self.splitlines())
+
+	# --- Replacement ---
+
+	# Kotlin: fun String.replace(oldValue: String, newValue: String, ignoreCase: Boolean = false): String
+	def replace_(self, old: str, new: str, ignore_case: bool = False) -> String:
+		"""Returns a new string with all occurrences of old replaced by new."""
+		if ignore_case:
+			pattern = re.compile(re.escape(old), re.IGNORECASE)
+			return String(pattern.sub(new, self))
+		return String(self.replace(old, new))
+
+	# Kotlin: fun String.replaceFirst(oldValue: String, newValue: String, ignoreCase: Boolean = false): String
+	def replace_first(self, old: str, new: str, ignore_case: bool = False) -> String:
+		"""Returns a new string with the first occurrence of old replaced by new."""
+		if ignore_case:
+			pattern = re.compile(re.escape(old), re.IGNORECASE)
+			return String(pattern.sub(new, self, count=1))
+		return String(self.replace(old, new, 1))
+
+	# Kotlin: fun String.replaceAfter(delimiter: String, replacement: String, missingDelimiterValue: String = this): String
+	def replace_after(self, delimiter: str, replacement: str, missing_delimiter_value: str | None = None) -> String:
+		"""Returns a string with the part after the first occurrence of the delimiter replaced by the replacement string."""
+		index = self.find(delimiter)
+		if index == -1:
+			return String(missing_delimiter_value) if missing_delimiter_value is not None else self
+		return String(self[: index + len(delimiter)] + replacement)
+
+	# Kotlin: fun String.replaceBefore(delimiter: String, replacement: String, missingDelimiterValue: String = this): String
+	def replace_before(self, delimiter: str, replacement: str, missing_delimiter_value: str | None = None) -> String:
+		"""Returns a string with the part before the first occurrence of the delimiter replaced by the replacement string."""
+		index = self.find(delimiter)
+		if index == -1:
+			return String(missing_delimiter_value) if missing_delimiter_value is not None else self
+		return String(replacement + self[index:])
+
+	# --- Padding ---
+
+	# Kotlin: fun String.padStart(length: Int, padChar: Char = ' '): String
+	def pad_start(self, length: int, pad_char: str = " ") -> String:
+		"""Returns a string of length at least length consisting of this string prepended with padChar as many times as are necessary to reach that length."""
+		return String(self.rjust(length, pad_char))
+
+	# Kotlin: fun String.padEnd(length: Int, padChar: Char = ' '): String
+	def pad_end(self, length: int, pad_char: str = " ") -> String:
+		"""Returns a string of length at least length consisting of this string appended with padChar as many times as are necessary to reach that length."""
+		return String(self.ljust(length, pad_char))
+
+	# --- Removal ---
+
+	# Kotlin: fun String.removePrefix(prefix: CharSequence): String
+	def remove_prefix(self, prefix: str) -> String:
+		"""If this string starts with the given prefix, returns a copy of this string with the prefix removed. Otherwise, returns this string."""
+		if self.startswith(prefix):
+			return String(self[len(prefix) :])
+		return self
+
+	# Kotlin: fun String.removeSuffix(suffix: CharSequence): String
+	def remove_suffix(self, suffix: str) -> String:
+		"""If this string ends with the given suffix, returns a copy of this string with the suffix removed. Otherwise, returns this string."""
+		if self.endswith(suffix):
+			return String(self[: len(self) - len(suffix)])
+		return self
+
+	# Kotlin: fun String.removeRange(startIndex: Int, endIndex: Int): String
+	def remove_range(self, start_index: int, end_index: int) -> String:
+		"""Returns a string with the sub-sequence of characters from the range [startIndex, endIndex) removed."""
+		return String(self[:start_index] + self[end_index:])
+
+	# --- Functional Ops ---
+
+	# Kotlin: inline fun <R> CharSequence.map(transform: (Char) -> R): List<R>
+	def map_(self, transform: Callable[[str], Any]) -> List[Any]:
+		"""Returns a list containing the results of applying the given transform function to each character in the original char sequence."""
+		from kothonic.collections import List
+
+		return List([transform(char) for char in self])
+
+	# Kotlin: inline fun String.filter(predicate: (Char) -> Boolean): String
+	def filter_(self, predicate: Callable[[str], bool]) -> String:
+		"""Returns a string containing only those characters from the original string that match the given predicate."""
+		return String("".join([char for char in self if predicate(char)]))
+
+	# Kotlin: inline fun CharSequence.forEach(action: (Char) -> Unit): Unit
+	def for_each(self, action: Callable[[str], None]) -> None:
+		"""Performs the given action on each character."""
+		for char in self:
+			action(char)
+
+	# --- Substrings ---
+
+	# Kotlin: fun String.substringBefore(delimiter: String, missingDelimiterValue: String = this): String
+	def substring_before(self, delimiter: str, missing_delimiter_value: str | None = None) -> String:
+		"""Returns a string containing the characters before the first occurrence of the delimiter."""
+		index = self.find(delimiter)
+		if index == -1:
+			return String(missing_delimiter_value) if missing_delimiter_value is not None else self
+		return String(self[:index])
+
+	# Kotlin: fun String.substringAfter(delimiter: String, missingDelimiterValue: String = this): String
+	def substring_after(self, delimiter: str, missing_delimiter_value: str | None = None) -> String:
+		"""Returns a string containing the characters after the first occurrence of the delimiter."""
+		index = self.find(delimiter)
+		if index == -1:
+			return String(missing_delimiter_value) if missing_delimiter_value is not None else self
+		return String(self[index + len(delimiter) :])
+
+	# Kotlin: fun String.substringBeforeLast(delimiter: String, missingDelimiterValue: String = this): String
+	def substring_before_last(self, delimiter: str, missing_delimiter_value: str | None = None) -> String:
+		"""Returns a string containing the characters before the last occurrence of the delimiter."""
+		index = self.rfind(delimiter)
+		if index == -1:
+			return String(missing_delimiter_value) if missing_delimiter_value is not None else self
+		return String(self[:index])
+
+	# Kotlin: fun String.substringAfterLast(delimiter: String, missingDelimiterValue: String = this): String
+	def substring_after_last(self, delimiter: str, missing_delimiter_value: str | None = None) -> String:
+		"""Returns a string containing the characters after the last occurrence of the delimiter."""
+		index = self.rfind(delimiter)
+		if index == -1:
+			return String(missing_delimiter_value) if missing_delimiter_value is not None else self
+		return String(self[index + len(delimiter) :])

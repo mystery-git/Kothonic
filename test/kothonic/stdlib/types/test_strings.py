@@ -97,15 +97,20 @@ def test_contains():
 def test_starts_with():
 	assert test_string.starts_with("t")
 	assert not test_string.starts_with("x")
+	assert test_string.starts_with("T", ignore_case=True)
 
 
 def test_ends_with():
 	assert test_string.ends_with("t")
 	assert not test_string.ends_with("x")
+	assert test_string.ends_with("T", ignore_case=True)
 
 
 def test_capitalize():
 	assert test_string.capitalize_() == test_string[0].upper() + test_string[1:]
+	assert String("").capitalize_() == ""
+	assert String("hello world").capitalize_() == "Hello world"
+	assert isinstance(test_string.capitalize_(), String)
 
 
 def test_plus():
@@ -131,9 +136,14 @@ def test_drop_last():
 
 
 def test_index_of():
+	from kothonic.stdlib import Int
+
 	assert test_string.index_of("t") == 0
 	assert test_string.index_of("x") == -1
 	assert test_string.index_of("s") == 2
+	assert test_string.index_of("T", ignore_case=True) == 0
+	assert test_string.index_of("t", start_index=1) == 3
+	assert isinstance(test_string.index_of("t"), Int)
 
 
 def test_is_digit():
@@ -142,14 +152,184 @@ def test_is_digit():
 
 
 def test_to_list():
+	from kothonic.collections import List
+
 	result = test_string.to_list()
 	assert result == ["t", "e", "s", "t"]
-	assert isinstance(result, list)
+	assert isinstance(result, List)
 
 
 def test_method_chaining():
 	new_string = test_string.uppercase().lowercase().reversed_().trim().substring(0, 2).uppercase().lowercase()
 	assert new_string == "ts"
+	assert isinstance(new_string, String)
+
+
+# --- New Tests ---
+
+
+def test_split():
+	import re
+	from kothonic.collections import List
+
+	s = String("a,b,c")
+	result = s.split_(",")
+	assert result == ["a", "b", "c"]
+	assert isinstance(result, List)
+	assert isinstance(result[0], String)
+
+	assert s.split_(",", limit=2) == ["a", "b,c"]
+
+	s2 = String("a1b2c")
+	assert s2.split_(re.compile(r"\d")) == ["a", "b", "c"]
+
+	s3 = String("aAbB")
+	assert s3.split_("a", ignore_case=True) == ["", "", "bB"]
+
+
+def test_lines():
+	from kothonic.collections import List
+
+	s = String("a\nb\nc")
+	result = s.lines()
+	assert result == ["a", "b", "c"]
+	assert isinstance(result, List)
+	assert isinstance(result[0], String)
+
+
+def test_line_sequence():
+	s = String("a\nb\nc")
+	seq = s.line_sequence()
+	result = list(seq)
+	assert result == ["a", "b", "c"]
+	assert isinstance(result[0], String)
+
+
+def test_replace():
+	s = String("abcabc")
+	result = s.replace_("a", "x")
+	assert result == "xbcxbc"
+	assert isinstance(result, String)
+	assert s.replace_("A", "x", ignore_case=True) == "xbcxbc"
+
+
+def test_replace_first():
+	s = String("abcabc")
+	result = s.replace_first("a", "x")
+	assert result == "xbcabc"
+	assert isinstance(result, String)
+	assert s.replace_first("A", "x", ignore_case=True) == "xbcabc"
+
+
+def test_replace_after():
+	s = String("abc:def")
+	result = s.replace_after(":", "xyz")
+	assert result == "abc:xyz"
+	assert isinstance(result, String)
+	assert s.replace_after("-", "xyz", "default") == "default"
+
+
+def test_replace_before():
+	s = String("abc:def")
+	result = s.replace_before(":", "xyz")
+	assert result == "xyz:def"
+	assert isinstance(result, String)
+	assert s.replace_before("-", "xyz", "default") == "default"
+
+
+def test_pad_start():
+	s = String("abc")
+	result = s.pad_start(5, "-")
+	assert result == "--abc"
+	assert isinstance(result, String)
+
+
+def test_pad_end():
+	s = String("abc")
+	result = s.pad_end(5, "-")
+	assert result == "abc--"
+	assert isinstance(result, String)
+
+
+def test_remove_prefix():
+	s = String("abc")
+	result = s.remove_prefix("a")
+	assert result == "bc"
+	assert isinstance(result, String)
+	assert s.remove_prefix("x") == "abc"
+
+
+def test_remove_suffix():
+	s = String("abc")
+	result = s.remove_suffix("c")
+	assert result == "ab"
+	assert isinstance(result, String)
+	assert s.remove_suffix("x") == "abc"
+
+
+def test_remove_range():
+	s = String("abcde")
+	result = s.remove_range(1, 3)
+	assert result == "ade"
+	assert isinstance(result, String)
+	assert s.remove_range(0, 1) == "bcde"
+	assert s.remove_range(4, 5) == "abcd"
+	assert isinstance(s.remove_range(1, 3), String)
+
+
+def test_map():
+	from kothonic.collections import List
+
+	s = String("abc")
+	result = s.map_(lambda c: c.upper())
+	assert result == ["A", "B", "C"]
+	assert isinstance(result, List)
+
+
+def test_filter():
+	s = String("abc123def")
+	result = s.filter_(lambda c: c.isdigit())
+	assert result == "123"
+	assert isinstance(result, String)
+
+
+def test_for_each():
+	s = String("abc")
+	result = []
+	s.for_each(lambda c: result.append(c))
+	assert result == ["a", "b", "c"]
+
+
+def test_substring_before():
+	s = String("abc:def")
+	result = s.substring_before(":")
+	assert result == "abc"
+	assert isinstance(result, String)
+	assert s.substring_before("-", "default") == "default"
+
+
+def test_substring_after():
+	s = String("abc:def")
+	result = s.substring_after(":")
+	assert result == "def"
+	assert isinstance(result, String)
+	assert s.substring_after("-", "default") == "default"
+
+
+def test_substring_before_last():
+	s = String("abc:def:ghi")
+	result = s.substring_before_last(":")
+	assert result == "abc:def"
+	assert isinstance(result, String)
+	assert s.substring_before_last("-", "default") == "default"
+
+
+def test_substring_after_last():
+	s = String("abc:def:ghi")
+	result = s.substring_after_last(":")
+	assert result == "ghi"
+	assert isinstance(result, String)
+	assert s.substring_after_last("-", "default") == "default"
 
 
 if __name__ == "__main__":
